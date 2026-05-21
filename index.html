@@ -409,6 +409,11 @@
     background:#FFF5E5;
     border-left-color:var(--warn);
   }
+  .msg-block.future{
+    background:linear-gradient(120deg,#FFF5E8 0%,#FFE9D2 100%);
+    border-left-color:#FF7A36;
+  }
+  .msg-block.future .msg-label{color:#FF7A36;}
   .msg-block.custom{
     background:#F4F2EE;
     border-left-color:var(--ink-soft);
@@ -436,6 +441,12 @@
     line-height:1.75;
   }
 
+  /* market position sub-items */
+  .pos-item{margin-top:12px;}
+  .pos-item:first-of-type{margin-top:8px;}
+  .pos-h{font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px;letter-spacing:.02em;}
+  .pos-h::before{content:"▶ ";font-size:10px;color:var(--green);}
+
   /* reality gap visualizer */
   .gap-vis{
     margin-top:14px;
@@ -456,6 +467,32 @@
   .gap-row .gap-value{font-weight:700;color:var(--ink);}
   .gap-row.actual .gap-value{color:var(--orange);}
   .gap-row.diff .gap-value{color:var(--bad);}
+
+  /* Advisor block */
+  .advisor-block{
+    background:linear-gradient(135deg,#F7FCF9 0%,#E6F7EE 100%);
+    border-left:4px solid var(--green);
+    border-radius:14px;
+    padding:18px 22px;
+    margin-top:22px;
+  }
+  .advisor-eyebrow{
+    font-size:11px;
+    font-weight:700;
+    color:var(--green);
+    letter-spacing:.08em;
+    margin-bottom:8px;
+  }
+  .advisor-block p{
+    font-size:14px;
+    line-height:1.85;
+    color:var(--ink);
+    margin:0;
+  }
+  .advisor-block strong{
+    color:var(--green);
+    font-weight:700;
+  }
 
   /* CTA card */
   .cta-card{
@@ -526,7 +563,7 @@
   <!-- ============== HERO ============== -->
   <div id="screen-hero" class="screen active">
     <div class="card">
-      <span class="hero-eyebrow">無料・約2分</span>
+      <span class="hero-eyebrow">無料・かんたん</span>
       <h1 class="hero-title">あなたの<span class="accent">転職タイプ</span>は？</h1>
       <p class="hero-sub">市場価値と動き出しタイミングを、<br/>5つの動物タイプで診断します。</p>
 
@@ -567,7 +604,6 @@
       <div class="options" id="qOptions"></div>
       <div class="nav-row">
         <button class="btn btn-ghost" id="qPrev" onclick="prevQuestion()">← 戻る</button>
-        <button class="btn btn-primary" id="qNext" onclick="nextQuestion()" disabled>次へ</button>
       </div>
     </div>
   </div>
@@ -599,7 +635,21 @@
 
       <div class="msg-block market">
         <div class="msg-label">市場価値の見立て</div>
-        <p class="msg-body" id="resMarket"></p>
+        <div class="pos-item"><div class="pos-h">あなたの年代における市場感</div><p class="msg-body" id="resAge"></p></div>
+        <div class="pos-item"><div class="pos-h">自己評価と実態</div><p class="msg-body" id="resMarket"></p></div>
+      </div>
+
+      <div class="msg-block market">
+        <div class="msg-label">あなたの市場価値ポジション</div>
+        <div class="pos-item"><div class="pos-h">活かせる強み</div><p class="msg-body" id="posStrength"></p></div>
+        <div class="pos-item"><div class="pos-h">次のキャリア候補</div><p class="msg-body" id="posNext"></p></div>
+        <div class="pos-item"><div class="pos-h">市場価値をさらに高めるカギ</div><p class="msg-body" id="posLevelup"></p></div>
+      </div>
+
+      <div class="msg-block future">
+        <div class="msg-label" id="futureLabel">動いたら、こんな未来が</div>
+        <h3 class="msg-headline" id="futureHeadline"></h3>
+        <p class="msg-body" id="futureBody"></p>
       </div>
 
       <div class="msg-block reality">
@@ -627,11 +677,16 @@
         <p class="msg-body" id="resCustom"></p>
       </div>
 
+      <div class="advisor-block">
+        <div class="advisor-eyebrow">— キャリアアドバイザーから</div>
+        <p>診断結果はここまでです。本当に大事なのは、あなた特有の事情に合わせて具体的に動き方を決めること。<strong>リスクの洗い出し、対策の検討、解決までを、私たちが一緒に伴走します。</strong>少し話してみるだけで、見える景色が変わるはずです。</p>
+      </div>
+
       <div class="cta-card">
         <div class="cta-eyebrow">一度、話してみませんか？</div>
         <h3 class="cta-headline" id="ctaHeadline">あなたの職種・年代で<br/>今どんなオファーが出ているか</h3>
         <p class="cta-body">無料でお伝えします。<br/>"とりあえず話を聞く"だけでもOKです。</p>
-        <a id="ctaPrimary" class="btn btn-cta" href="xxxxx">無料で相談してみる</a>
+        <a id="ctaPrimary" class="btn btn-cta" href="#YOUR_LINK_HERE">無料で相談してみる</a>
         <div class="cta-note">
           <span class="free-tag">無料</span>登録不要・営業の電話なし
         </div>
@@ -647,7 +702,7 @@
 
 <script>
 /* ▼ GoogleスプレッドシートのGAS WebアプリURL（未設定は送信スキップ） */
-const GAS_ENDPOINT = "https://script.google.com/macros/s/xxxxx/exec";
+const GAS_ENDPOINT = "https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXX/exec";
 
 function getSessionId(){
   if(!window._sid){ window._sid = "s_"+Date.now()+"_"+Math.random().toString(36).slice(2,9); }
@@ -844,7 +899,9 @@ function renderQuestion(){
       document.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
       label.classList.add("selected");
       answers[q.id] = opt.value;
-      document.getElementById("qNext").disabled = false;
+      /* 選択後、自動で次の質問へ（連打防止のため既存タイマーをクリア） */
+      clearTimeout(window._advTimer);
+      window._advTimer = setTimeout(()=>nextQuestion(), 320);
     });
     if(answers[q.id] !== undefined && String(answers[q.id])===String(opt.value)){
       label.classList.add("selected");
@@ -853,8 +910,6 @@ function renderQuestion(){
   });
 
   document.getElementById("qPrev").style.visibility = qIndex===0 ? "hidden" : "visible";
-  document.getElementById("qNext").textContent = qIndex===QUESTIONS.length-1 ? "結果を見る →" : "次へ →";
-  document.getElementById("qNext").disabled = (answers[q.id] === undefined);
 }
 
 function prevQuestion(){
@@ -910,7 +965,7 @@ const ANIMALS = {
   cheetah:{
     name:"チーター型",
     tagMain:"動くなら、今。",
-    tagSub:"動ける条件が揃った"+'"好機の中心"'+"にいる人",
+    tagSub:"決断したら一気に駆け抜ける、ハンタータイプ",
     meter:95,
     svg:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
       ${PLATFORM_SVG}
@@ -945,7 +1000,7 @@ const ANIMALS = {
   rabbit:{
     name:"ウサギ型",
     tagMain:"そろそろ動き時。",
-    tagSub:"3〜6ヶ月以内に動くと、得をする人",
+    tagSub:"アンテナを張り、機を察知する敏感タイプ",
     meter:70,
     svg:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
       ${PLATFORM_SVG}
@@ -971,7 +1026,7 @@ const ANIMALS = {
   fox:{
     name:"キツネ型",
     tagMain:"焦らず、賢く選ぶ。",
-    tagSub:"情報を集めて"+'"いい一手"'+"を狙う、戦略派",
+    tagSub:"情報を集めて最良の一手を狙う、知性派",
     meter:50,
     svg:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
       ${PLATFORM_SVG}
@@ -998,8 +1053,8 @@ const ANIMALS = {
   },
   cat:{
     name:"ネコ型",
-    tagMain:"今は様子見でOK。",
-    tagSub:"でも"+'"知らない"'+"のは一番のリスクになる人",
+    tagMain:"自分のペースで。",
+    tagSub:"人に流されない、自分軸のマイペース派",
     meter:30,
     svg:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
       ${PLATFORM_SVG}
@@ -1030,7 +1085,7 @@ const ANIMALS = {
   turtle:{
     name:"カメ型",
     tagMain:"今は地固めの時。",
-    tagSub:"現職で力を蓄える、長期戦タイプ",
+    tagSub:"焦らず長期で勝負する、職人タイプ",
     meter:15,
     svg:`<svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
       ${PLATFORM_SVG}
@@ -1062,7 +1117,7 @@ const HEADLINES = {
   cheetah:"今、最高速で動くべきタイミング。",
   rabbit:"3〜6ヶ月以内に、動き始めるのが理想です。",
   fox:"焦らず、情報を集めて賢く動く時期。",
-  cat:"今は様子見。ただし"+'"知らない"'+"のが一番のリスク。",
+  cat:"焦らず、自分の感覚を信じる時期。",
   turtle:"今は現職で力を蓄える時期。ただし点検は必須。"
 };
 
@@ -1077,7 +1132,7 @@ const BODY_BY_TYPE_BRAKE = {
   rabbit:{
     risk:"リスクを最小化したいタイプですね。だからこそ、独りで動くより伴走者がいる方が向いています。あなたの条件なら、"+'"今より悪い環境"'+"を避ける選び方は十分可能です。",
     timing:"3〜6ヶ月のレンジで動き始めるのがちょうどいい時期。今すぐではなく、"+'"次の春"'+"や"+'"次のボーナス後"'+"を狙うなら、今が情報収集を始めるベストタイミングです。",
-    howto:"最初の一歩は「自分の市場価値を知る」こと。これは今日の診断でほぼ完了です。次は、実際の求人と照らし合わせる段階。15分のヒアリングで、リアルな相場感が見えてきます。",
+    howto:"最初の一歩は「自分の市場価値を知る」こと。これは今日の診断でほぼ完了です。次は、実際の求人と照らし合わせる段階。少しヒアリングするだけで、リアルな相場感が見えてきます。",
     none:"考えてこなかった分、知ったときの世界の広がりが大きいタイプ。"+'"動かないという選択"'+"も、知った上でする方が後悔がありません。",
     satisfied:"無理に動く必要はありません。ただし、3年に1回でも市場の景色を見ておくと、いざという時に判断軸が変わります。"+'"動ける状態"'+"を維持しておくことが、結果として現職での交渉力にもつながります。"
   },
@@ -1089,20 +1144,89 @@ const BODY_BY_TYPE_BRAKE = {
     satisfied:"動かないという判断は正解の可能性があります。ただ、"+'"知らないから動かない"'+"と"+'"知った上で動かない"'+"は意味が違います。後者の方が、今の会社にも自信を持って向き合えるはずです。"
   },
   cat:{
-    risk:"リスク回避を優先する慎重派。安定期だからこそ、リスクは未然に減らせます。"+'"動くべき時に動けない"'+"のが本当のリスクです。視野を広げておくだけで十分です。",
-    timing:"タイミングは"+'"準備した人"'+"だけが見極められます。今すぐ動く必要はありませんが、半年に一度の市場点検は習慣にした方が後で得をします。",
-    howto:"何から始めればいいかわからない── それで正解です。今のあなたは"+'"動かないけど知っておく"'+"のが正解。30分だけ話を聞くだけで、視界がクリアになります。",
-    none:"考えていない期間が長いほど、視野が狭くなりがちです。今のうちに"+'"自分の市場価値"'+"を客観視しておくと、5年後の選択肢が変わってきます。",
-    satisfied:"現状に不満がないのは強み。一方で"+'"知らない"'+"ことが、知らず知らずのうちに選択肢を狭めている可能性も。動かなくても、市場の景色を知っておくことに損はありません。"
+    risk:"マイペース派のあなたは、無理に動かないことでリスクを避けています。ただし"+'"知らないから動かない"'+"と"+'"知った上で動かない"'+"は別物。自分軸を保ちつつ、視野だけは広げておくのが本物のマイペース。",
+    timing:"タイミングは他人が決めるものではない、というのがネコ型の流儀。"+'"自分の中でこれだ"'+"と感じる瞬間のために、その判断材料を今から集めておくのが賢明です。",
+    howto:"何から始めればいい── 慎重で当たり前。最初の一歩は"+'"気が向いた時に話を聞く"'+"だけで十分。気が乗らなければ動かなくていい。それでこそ自分軸のネコ型。",
+    none:"考えてこなかった期間が長いと、見える景色が固定化されます。マイペース派こそ、新しい刺激を入れることで自分の軸が磨かれます。流されるためでなく、軸を確かめるために。",
+    satisfied:"「今のままで十分」と思える満足度は、自分軸が強い証拠。ただ、その判断は"+'"市場を知った上での選択"'+"であるほど価値があります。動かない選択を自信を持って続けるための情報収集です。"
   },
   turtle:{
     risk:"今は積み上げるフェーズ。リスクを取って動く時期ではありません。ただし、3年後に"+'"市場が変わっていた"'+"とき後悔しないためにも、年1回の市場点検はしておきたいところです。",
     timing:"動くタイミングはまだ先でOKです。今は現職での経験を厚くするのが最優先。ただし、業界の動向は耳に入れておくと、来るべき時期を逃しません。",
-    howto:"今は何かを始める必要はありません。ただし"+'"いつ始めればいいか"'+"の見極めができないまま時間が過ぎるのも避けたいところ。5分だけ、第三者の視点で現状を整理する機会はあって損はないです。",
+    howto:"今は何かを始める必要はありません。ただし"+'"いつ始めればいいか"'+"の見極めができないまま時間が過ぎるのも避けたいところ。少しだけ第三者の視点で現状を整理する機会はあって損はないです。",
     none:"今の会社で力を蓄えるのが最善。ただし、考えていない期間が長いと、いざ動こうとした時に動けない体質になります。年1回でも、考える機会は作っておきたいです。",
     satisfied:"判断は正しいです。今は動かないのが正解。ただし、転職市場は3年で大きく変わります。"+'"動かない選択"'+"を続けるためにも、たまには市場の景色を見ておくと安心材料になります。"
   }
 };
+const MARKET_POSITION = {
+  sales:{
+    strength:"顧客折衝・課題解決・数字を作る経験は、業界を越えて評価される最高の汎用スキル。",
+    next:"カスタマーサクセス／事業開発／営業マネジメント／戦略コンサル系へのキャリアが射程内。",
+    levelup:"SaaS営業・データドリブン営業の経験、英語力、マネジメント実績を一つでも加えると年収レンジが一段上がります。"
+  },
+  marketing:{
+    strength:"戦略立案とデータ分析を両輪で回せる経験は、いま市場で最も奪い合いになっている希少スキル。",
+    next:"PdM（プロダクトマネージャー）／事業企画／グロース戦略／将来のCMO候補へ進む道があります。",
+    levelup:"BtoB SaaSのグロース実績、AI活用、英語の3点セットを加えると、市場価値は跳ね上がります。"
+  },
+  engineer:{
+    strength:"技術で課題を解決する力は、業界・規模を問わず引き合いが絶えない超売り手市場のスキル。",
+    next:"テックリード／PdM／アーキテクト／CTO候補／AI・ML系のシニアロールが選択肢に入ります。",
+    levelup:"AI/LLM活用、クラウドアーキテクチャ、英語ドキュメント読解のどれか1つを上乗せすると、年収は青天井になります。"
+  },
+  creative:{
+    strength:"ビジュアル力にUX思考・ブランド構築の視点が加わると、希少な「事業を動かせるクリエイター」になります。",
+    next:"UXディレクター／アートディレクター／PdM／クリエイティブディレクターへの展開が見えてきます。",
+    levelup:"UXリサーチ、データドリブンデザイン、モーション、AI活用などビジネス側の言語を持つほど市場価値が上がります。"
+  },
+  admin:{
+    strength:"業務設計・正確性・社内調整力は、スタートアップやIPO準備企業で猛烈に需要が高い領域です。",
+    next:"経営企画／人事BP／PMO／IPO準備／コーポレートIT（DX推進）など、攻めのバックオフィスが射程に。",
+    levelup:"労務・経理・経営管理のいずれかを深掘り、もしくはBPO／SaaS活用の経験を積むと希少人材になります。"
+  },
+  professional:{
+    strength:"専門知識と倫理観に裏付けられた実務経験は、AI時代でも代替されにくい強固な資産です。",
+    next:"マネジメント／コンサルティング／独立／教育・研修など、知見を横展開するキャリアが見えています。",
+    levelup:"隣接領域の専門性、マネジメント経験、デジタル活用のどれかを加えると、専門家の中でも上位層へ。"
+  },
+  other:{
+    strength:"あなたの実務経験は、言語化と整理しだいで思った以上の市場価値を持っている可能性があります。",
+    next:"職種を越えて活かせる強みを整理することで、見えていなかった選択肢が広がります。",
+    levelup:"まずは「自分の経験を市場の言葉に翻訳する」棚卸しから。これだけで市場価値は2倍に見えてきます。"
+  }
+};
+const FUTURE_BY_CHANGE = {
+  salary:{
+    label:"年収アップの現実",
+    body:"あなたの年代・職種なら、年収100〜200万円アップは決して夢ではありません。同職種で転職した人と現職に留まった人の年収差は、5年で約500万円との調査も。"+'"動いた人"'+"だけが手にできる現実です。"
+  },
+  work:{
+    label:"やりたい仕事に出会える",
+    body:"求人票には書かれていない"+'"会社の中身"'+"を知ると、想像以上に自分に合った仕事が見つかります。今の業務の延長線上にはない、ワクワクできる仕事は確実に存在します。"
+  },
+  style:{
+    label:"働き方の選択肢",
+    body:"リモート週3、フレックス、副業OK、時短── 3年前にあきらめた条件が、今は当たり前に通る求人が急増しています。働き方を変える転職は、人生の自由度を上げる最も合理的な投資の一つです。"
+  },
+  people:{
+    label:"人間関係のリセット",
+    body:"人間関係のストレスは、転職で"+'"ガラッと変わる"'+"数少ない要素。会社のカラー、上司のタイプ、チームの空気は、内情を知れば事前に選べます。"
+  },
+  industry:{
+    label:"業界を変える価値",
+    body:"業界を変えると年収レンジが2倍違うことも珍しくありません。あなたの経験を活かせる隣接業界には、想像していなかった選択肢があります。年齢的にも、今が動きやすい時期かもしれません。"
+  }
+};
+const AGE_MARKET = {
+  "20-early":"20代前半は、成長余地で勝負する時期。失敗も含めて経験を積める、最もチャレンジしやすい年代です。",
+  "20-late":"20代後半は、即戦力としての評価が始まる時期。3〜5年の経験は、第二新卒の枠を超えた本格的なキャリアの入り口です。",
+  "30-early":"30代前半は、即戦力期。専門性とマネジメントの分かれ道に立つ年代で、年収レンジも一気に広がります。",
+  "30-late":"30代後半は、経験を武器にする時期。専門性を深めるか、マネジメントで広げるか、5年後を見据えた選択が問われる年代です。",
+  "40plus":"40代以上は、実績と人脈で勝負する時期。マネジメント力、専門性の深さ、そして"+'"頼れる人"'+"としての価値が問われます。"
+};
+
+
+
 
 function showResult(){
   document.getElementById("screen-q").classList.remove("active");
@@ -1139,6 +1263,18 @@ function showResult(){
     marketMsg = "自己評価が低めですが、これは多くの場合「市場を知らない」ことが原因です。実際の求人と照らし合わせると、想像以上に通用するケースがほとんど。まずは"+'"市場側の景色"'+"を知ることから始めるのがおすすめです。";
   }
   document.getElementById("resMarket").textContent = marketMsg;
+  document.getElementById("resAge").textContent = AGE_MARKET[answers.age] || "";
+
+  /* ===== 市場価値ポジション（職種別の活かせる強み・次のキャリア・市場価値UP） ===== */
+  const posData = MARKET_POSITION[answers.role] || MARKET_POSITION.other;
+  document.getElementById("posStrength").textContent = posData.strength;
+  document.getElementById("posNext").textContent = posData.next;
+  document.getElementById("posLevelup").textContent = posData.levelup;
+
+  /* ===== 動いたらこんな未来が（Q9の希望に応じた未来訴求） ===== */
+  const futureData = FUTURE_BY_CHANGE[answers.change] || FUTURE_BY_CHANGE.salary;
+  document.getElementById("futureHeadline").textContent = futureData.label;
+  document.getElementById("futureBody").textContent = futureData.body;
 
   /* ===== リアリティチェック ===== */
   const durLabels = {"under1":"1ヶ月以内","1to3":"1〜3ヶ月","3to6":"3〜6ヶ月","over6":"半年以上"};
@@ -1184,7 +1320,7 @@ function showResult(){
   const ageL = ageLabels[answers.age] || "あなたの年代";
   const roleL = roleLabels[answers.role] || "あなたの職種";
   document.getElementById("ctaHeadline").innerHTML =
-    `${ageL}・${roleL}で<br/>今どんなオファーが出ているか`;
+    `${ageL}の方に<br/>今どんなオファーが出ているか`;
   sendToSheet({event:"diagnosis_complete",score:score,animalType:animal.name,
     age:answers.age,role:answers.role,salary:answers.salary,motivation:answers.motivation,
     evaluation:answers.evaluation,transferable:answers.transferable,
