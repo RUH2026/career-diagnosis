@@ -494,6 +494,84 @@
     font-weight:700;
   }
 
+  /* CA selection */
+  .ca-title{
+    font-size:22px;
+    font-weight:900;
+    text-align:center;
+    line-height:1.45;
+    margin:14px 0 8px;
+  }
+  .ca-sub{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 18px;
+  }
+  .ca-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .ca-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    background:#fff;
+    border:2px solid var(--border);
+    border-radius:14px;
+    text-decoration:none;
+    color:var(--ink);
+    transition:all .15s ease;
+    cursor:pointer;
+  }
+  .ca-card:hover{
+    border-color:var(--orange-light);
+    background:var(--orange-soft);
+    transform:translateY(-1px);
+  }
+  .ca-avatar{
+    width:54px; height:54px;
+    border-radius:50%;
+    background:linear-gradient(120deg,var(--orange) 0%,var(--orange-light) 100%);
+    color:#fff;
+    font-weight:900;
+    font-size:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .ca-info{flex:1;min-width:0;}
+  .ca-name{
+    font-size:17px;
+    font-weight:700;
+  }
+  .ca-arrow{
+    color:var(--orange);
+    font-size:28px;
+    font-weight:900;
+    line-height:1;
+  }
+  .ca-note-top{
+    text-align:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    background:var(--green-soft);
+    padding:10px 14px;
+    border-radius:10px;
+    margin:0 0 20px;
+    line-height:1.6;
+  }
+  .ca-note-top strong{color:var(--green);font-weight:700;}
+  .ca-note{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-mute);
+    margin-top:18px;
+  }
+
   /* CTA card */
   .cta-card{
     background:linear-gradient(135deg,#FFFFFF 0%,#FFF5E8 100%);
@@ -641,6 +719,7 @@
 
       <div class="msg-block market">
         <div class="msg-label">あなたの市場価値ポジション</div>
+        <div class="pos-item"><div class="pos-h">あなたの年代の市場感</div><p class="msg-body" id="posAge"></p></div>
         <div class="pos-item"><div class="pos-h">活かせる強み</div><p class="msg-body" id="posStrength"></p></div>
         <div class="pos-item"><div class="pos-h">次のキャリア候補</div><p class="msg-body" id="posNext"></p></div>
         <div class="pos-item"><div class="pos-h">市場価値をさらに高めるカギ</div><p class="msg-body" id="posLevelup"></p></div>
@@ -686,7 +765,7 @@
         <div class="cta-eyebrow">一度、話してみませんか？</div>
         <h3 class="cta-headline" id="ctaHeadline">あなたの職種・年代で<br/>今どんなオファーが出ているか</h3>
         <p class="cta-body">無料でお伝えします。<br/>"とりあえず話を聞く"だけでもOKです。</p>
-        <a id="ctaPrimary" class="btn btn-cta" href="#YOUR_LINK_HERE">無料で相談してみる</a>
+        <a id="ctaPrimary" class="btn btn-cta" href="javascript:void(0);">無料で相談してみる</a>
         <div class="cta-note">
           <span class="free-tag">無料</span>登録不要・営業の電話なし
         </div>
@@ -694,6 +773,67 @@
 
       <div style="text-align:center;margin-top:18px;">
         <button class="btn btn-ghost" onclick="restart()">もう一度診断する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== CA SELECTION ============== -->
+  <div id="screen-ca" class="screen">
+    <div class="card">
+      <button class="btn btn-ghost" onclick="backToResult()" style="margin-bottom:8px;">← 結果に戻る</button>
+      <h2 class="ca-title">担当アドバイザーを<br/>選んでください</h2>
+      <p class="ca-sub">あなたの担当CAの名前を選択してください。日程調整カレンダーへ進みます。</p>
+      <p class="ca-note-top">※ 担当者がわからない、もしくはこの中に担当者がいない場合は<strong>F</strong>を選んでください。</p>
+      <div class="ca-list">
+        <a class="ca-card" data-ca="A" href="#CA_A_URL_HERE">
+          <div class="ca-avatar">A</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー A</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
+        <a class="ca-card" data-ca="B" href="#CA_B_URL_HERE">
+          <div class="ca-avatar">B</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー B</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
+        <a class="ca-card" data-ca="C" href="#CA_C_URL_HERE">
+          <div class="ca-avatar">C</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー C</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
+        <a class="ca-card" data-ca="D" href="#CA_D_URL_HERE">
+          <div class="ca-avatar">D</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー D</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
+        <a class="ca-card" data-ca="E" href="#CA_E_URL_HERE">
+          <div class="ca-avatar">E</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー E</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
+        <a class="ca-card" data-ca="F" href="#CA_F_URL_HERE">
+          <div class="ca-avatar">F</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー F</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
+        <a class="ca-card" data-ca="G" href="#CA_G_URL_HERE">
+          <div class="ca-avatar">G</div>
+          <div class="ca-info">
+            <div class="ca-name">アドバイザー G</div>
+          </div>
+          <div class="ca-arrow">›</div>
+        </a>
       </div>
     </div>
   </div>
@@ -1217,6 +1357,14 @@ const FUTURE_BY_CHANGE = {
     body:"業界を変えると年収レンジが2倍違うことも珍しくありません。あなたの経験を活かせる隣接業界には、想像していなかった選択肢があります。年齢的にも、今が動きやすい時期かもしれません。"
   }
 };
+const AGE_CONTEXT = {
+  "20-early":"20代前半は\"第二新卒\"の特権が使える時期。失敗を恐れず動ける、一番のフットワーク期です。",
+  "20-late":"20代後半は\"伸びしろ\"と\"実績\"のバランスが最も評価される、市場価値の上昇期です。",
+  "30-early":"30代前半は経験を活かしながらキャリアを再設計できる、最も動きやすい年代です。",
+  "30-late":"30代後半は\"即戦力\"評価と\"マネジメント候補\"の二段構えで動ける、価値最大化期です。",
+  "40plus":"40代以上は経験・専門性・人脈を武器にした、ハイクラス転職が現実的な選択肢です。"
+};
+
 const AGE_MARKET = {
   "20-early":"20代前半は、成長余地で勝負する時期。失敗も含めて経験を積める、最もチャレンジしやすい年代です。",
   "20-late":"20代後半は、即戦力としての評価が始まる時期。3〜5年の経験は、第二新卒の枠を超えた本格的なキャリアの入り口です。",
@@ -1267,6 +1415,7 @@ function showResult(){
 
   /* ===== 市場価値ポジション（職種別の活かせる強み・次のキャリア・市場価値UP） ===== */
   const posData = MARKET_POSITION[answers.role] || MARKET_POSITION.other;
+  document.getElementById("posAge").textContent = AGE_CONTEXT[answers.age] || "";
   document.getElementById("posStrength").textContent = posData.strength;
   document.getElementById("posNext").textContent = posData.next;
   document.getElementById("posLevelup").textContent = posData.levelup;
@@ -1331,8 +1480,19 @@ function showResult(){
 function restart(){
   for (const k in answers) delete answers[k];
   qIndex = 0;
-  document.getElementById("screen-result").classList.remove("active");
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById("screen-hero").classList.add("active");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function showCASelection(){
+  document.getElementById("screen-result").classList.remove("active");
+  document.getElementById("screen-ca").classList.add("active");
+  window.scrollTo({top:0,behavior:"instant"});
+}
+function backToResult(){
+  document.getElementById("screen-ca").classList.remove("active");
+  document.getElementById("screen-result").classList.add("active");
   window.scrollTo({top:0,behavior:"instant"});
 }
 
@@ -1347,7 +1507,19 @@ document.addEventListener("DOMContentLoaded", function(){
   /* ページ訪問を記録（URLクリックの集計用） */
   sendToSheet({event:"page_visited"});
   const cta = document.getElementById("ctaPrimary");
-  if(cta){ cta.addEventListener("click", function(){ sendToSheet({event:"cta_clicked",ctaClicked:true}); }); }
+  if(cta){
+    cta.addEventListener("click", function(e){
+      e.preventDefault();
+      sendToSheet({event:"cta_clicked",ctaClicked:true});
+      showCASelection();
+    });
+  }
+  /* CAカード選択をログに送る */
+  document.querySelectorAll(".ca-card").forEach(function(el){
+    el.addEventListener("click", function(){
+      sendToSheet({event:"ca_selected", caSelected: el.dataset.ca});
+    });
+  });
 });
 </script>
 </body>
